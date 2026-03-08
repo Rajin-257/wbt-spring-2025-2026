@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Html Test</title>
+</head>
+<body>
+    <h1>Js File Config</h1>
+</body>
+    <script>
+        let a = [1,2,3,4];
+        let b = [4,3,2,1];
+
+        [a,b]=[b,a]
+
+        console.log(a,b)
+
+
+        function square(i){
+            return i*i;
+        }
+        
+        for (let i = 1; i < 11; i++) {
+            console.log("for i", square(i));
+        }
+
+        c=[1,2,3,4,5]
+        max=0;
+        for(let i=0; i<5; i++){
+            if(c[i]<c[i+1]){
+                max= c[i+1];
+            }
+        }
+        console.log(max);
+    </script>
+</html>
