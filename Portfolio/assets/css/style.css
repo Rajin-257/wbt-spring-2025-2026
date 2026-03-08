@@ -91,4 +91,17 @@ nav a {
     border-radius: 5px;
 }
 
+.card{
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    transform: translateY(0px);
+    transition: transform 0.3s ease-in-out;
+    border: 1px solid #ddd;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
 
