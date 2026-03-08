@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Card Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="profile-main-container">
+    <!-- Editor Form -->
+    <div class="editor-form">
+        <h3>Edit Profile</h3>
+        <input type="text" id="inputName" placeholder="Full Name">
+        <div id="nameError" class="error">Name is required</div>
+        
+        <textarea id="inputBio" placeholder="Bio..." rows="3"></textarea>
+        <div id="bioError" class="error">Bio is required</div>
+
+        <input type="text" id="inputContact" placeholder="Contact Email/Phone">
+        
+        <div style="display: flex; gap: 5px; margin-top: 10px;">
+            <input type="text" id="inputHobby" placeholder="Add a hobby">
+            <button onclick="addHobby()">Add</button>
+        </div>
+
+        <div class="controls">
+            <button onclick="changeBg('#e3f2fd')">Blue BG</button>
+            <button onclick="changeBg('#fce4ec')">Pink BG</button>
+            <button onclick="changeTextColor('#0d47a1')">Blue Text</button>
+            <button onclick="changeTextColor('#333')">Dark Text</button>
+            <button onclick="changeFontSize('28px')">Large Font</button>
+            <button onclick="changeFontSize('24px')">Normal Font</button>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-update" onclick="updateProfile()">Update Profile</button>
+            <button class="btn-reset" onclick="resetProfile()">Reset Card</button>
+        </div>
+    </div>
+
+    <!-- Profile Card Display -->
+    <div id="profileCard">
+        <h2 id="cardName">John Doe</h2>
+        <p id="cardBio">Software developer and outdoor enthusiast.</p>
+        <p id="cardContact">Email: john@example.com</p>
+        <hr>
+        <h4>Hobbies</h4>
+        <ul id="hobbiesList">
+            <!-- Hobbies will appear here -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    const defaultValues = {
+        name: "John Doe",
+        bio: "Software developer and outdoor enthusiast.",
+        contact: "Email: john@example.com",
+        bg: "#ffffff",
+        textColor: "#333",
+        fontSize: "24px",
+        hobbies: []
+    };
+
+    function updateProfile() {
+        const nameVal = document.getElementById('inputName').value.trim();
+        const bioVal = document.getElementById('inputBio').value.trim();
+        const contactVal = document.getElementById('inputContact').value.trim();
+
+        const nameError = document.getElementById('nameError');
+        const bioError = document.getElementById('bioError');
+
+        // Form Validation
+        let isValid = true;
+        if (nameVal === "") {
+            nameError.style.display = "block";
+            isValid = false;
+        } else {
+            nameError.style.display = "none";
+        }
+
+        if (bioVal === "") {
+            bioError.style.display = "block";
+            isValid = false;
+        } else {
+            bioError.style.display = "none";
+        }
+
+        if (!isValid) return;
+
+        // Update content
+        document.getElementById('cardName').innerText = nameVal;
+        document.getElementById('cardBio').innerText = bioVal;
+        if (contactVal) {
+            document.getElementById('cardContact').innerText = contactVal;
+        }
+    }
+
+    function addHobby() {
+        const hobbyInput = document.getElementById('inputHobby');
+        const hobbyVal = hobbyInput.value.trim();
+        
+        if (hobbyVal === "") return;
+
+        const list = document.getElementById('hobbiesList');
+        const li = document.createElement('li');
+        li.className = "hobby-item";
+        li.innerHTML = `
+            <span>${hobbyVal}</span>
+            <span class="remove-hobby" onclick="this.parentElement.remove()">×</span>
+        `;
+        
+        list.appendChild(li);
+        hobbyInput.value = "";
+    }
+
+    // Style manipulation functions
+    function changeBg(color) {
+        document.getElementById('profileCard').style.backgroundColor = color;
+    }
+
+    function changeTextColor(color) {
+        document.getElementById('profileCard').style.color = color;
+        document.getElementById('cardBio').style.color = color;
+    }
+
+    function changeFontSize(size) {
+        document.getElementById('cardName').style.fontSize = size;
+    }
+
+    // Challenge: Reset Button
+    function resetProfile() {
+        document.getElementById('cardName').innerText = defaultValues.name;
+        document.getElementById('cardBio').innerText = defaultValues.bio;
+        document.getElementById('cardContact').innerText = defaultValues.contact;
+        
+        const card = document.getElementById('profileCard');
+        card.style.backgroundColor = defaultValues.bg;
+        card.style.color = defaultValues.textColor;
+        document.getElementById('cardName').style.fontSize = defaultValues.fontSize;
+        document.getElementById('cardBio').style.color = "#666";
+
+        document.getElementById('hobbiesList').innerHTML = "";
+        
+        // Clear inputs
+        document.getElementById('inputName').value = "";
+        document.getElementById('inputBio').value = "";
+        document.getElementById('inputContact').value = "";
+        document.getElementById('inputHobby').value = "";
+        
+        document.getElementById('nameError').style.display = "none";
+        document.getElementById('bioError').style.display = "none";
+    }
+</script>
+
+</body>
+</html>

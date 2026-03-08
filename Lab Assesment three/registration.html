@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="reg-container">
+    <h2>Student Registration</h2>
+    
+    <div class="form-group">
+        <label for="name">Student Name</label>
+        <input type="text" id="name" placeholder="Enter full name">
+        <div id="nameError" class="error-text"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" placeholder="Enter age">
+        <div id="ageError" class="error-text"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="course">Course Selection</label>
+        <select id="course">
+            <option value="">-- Choose a course --</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Data Science">Data Science</option>
+            <option value="UI/UX Design">UI/UX Design</option>
+            <option value="Cyber Security">Cyber Security</option>
+        </select>
+        <div id="courseError" class="error-text"></div>
+    </div>
+
+    <button class="add-btn" onclick="registerStudent()">Register Student</button>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows go here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function registerStudent() {
+        const nameInput = document.getElementById('name');
+        const ageInput = document.getElementById('age');
+        const courseSelect = document.getElementById('course');
+
+        const nameError = document.getElementById('nameError');
+        const ageError = document.getElementById('ageError');
+        const courseError = document.getElementById('courseError');
+
+        // Clear previous errors
+        nameError.innerText = "";
+        ageError.innerText = "";
+        courseError.innerText = "";
+
+        let isValid = true;
+
+        // Form Validation: Name
+        if (nameInput.value.trim() === "") {
+            nameError.innerText = "Name is required.";
+            isValid = false;
+        }
+
+        // Form Validation: Age
+        if (ageInput.value === "" || isNaN(ageInput.value) || ageInput.value <= 0) {
+            ageError.innerText = "Please enter a valid age.";
+            isValid = false;
+        }
+
+        // Form Validation: Course
+        if (courseSelect.value === "") {
+            courseError.innerText = "Please select a course.";
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        addStudentToTable(nameInput.value, ageInput.value, courseSelect.value);
+
+        // Reset fields
+        nameInput.value = "";
+        ageInput.value = "";
+        courseSelect.value = "";
+    }
+
+    function addStudentToTable(name, age, course) {
+        const tableBody = document.querySelector('#studentTable tbody');
+        const row = document.createElement('tr');
+
+        // Style manipulation: Color rows differently based on age
+        if (parseInt(age) > 20) {
+            row.classList.add('senior-student');
+        }
+
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${course}</td>
+            <td>
+                <button class="update-btn" onclick="updateStudent(this)">Update</button>
+                <button class="remove-btn" onclick="removeStudent(this)">Remove</button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+    }
+
+    function removeStudent(button) {
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+    function updateStudent(button) {
+        const row = button.parentNode.parentNode;
+        const nameCell = row.cells[0];
+        const ageCell = row.cells[1];
+        const courseCell = row.cells[2];
+
+        const newName = prompt("Update Name:", nameCell.innerText);
+        const newAge = prompt("Update Age:", ageCell.innerText);
+        const newCourse = prompt("Update Course (Web Development, Data Science, UI/UX Design, Cyber Security):", courseCell.innerText);
+
+        if (newName && newAge && newCourse) {
+            nameCell.innerText = newName;
+            ageCell.innerText = newAge;
+            courseCell.innerText = newCourse;
+            
+            if (parseInt(newAge) > 20) {
+                row.classList.add('senior-student');
+            } else {
+                row.classList.remove('senior-student');
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
